@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        async function measureSpeedTestLike(url, iterations = 5, chunkSize = 100) {
+            let totalTime = 0;
+            let totalBytes = 0;
+
+            for (let i = 0; i < iterations; i++) {
+                
+                const response = await fetch(`${url}?cachebust=${Date.now()}`, {
+                    method: 'GET',
+                    cache: 'no-store' // Force fresh download
+                });
+                const startTime = performance.now();
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+
+                const blob = await response.blob();
+                const endTime = performance.now();
+
+                const timeTaken = (endTime - startTime) / 1000;
+                const sizeBytes = blob.size;
+                totalTime += timeTaken;
+                totalBytes += sizeBytes;
+
+                console.log(`Run ${i + 1}: ${(sizeBytes / (1024 * 1024)).toFixed(2)} MB in ${timeTaken.toFixed(2)}s`);
+            }
+
+            const sizeMB = totalBytes / (1024 * 1024);
+            const speedMbps = (sizeMB / totalTime) * 8;
+            console.log(`Total: ${sizeMB.toFixed(2)} MB in ${totalTime.toFixed(2)} seconds over ${iterations} runs`);
+            console.log(`Average Speed: ${speedMbps.toFixed(2)} Mbps`);
+            return speedMbps;
+        }
+
+        // Use a 100 MB file, repeat 5 times (500 MB total)
+        // measureSpeedTestLike('https://files-c79.pages.dev/part-aa', 10);
+        measureSpeedTestLike('https://speeddown-1.myipaddress.live/part-aa', 10);
+
+    </script>
+</body>
+
+</html>
