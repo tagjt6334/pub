@@ -37,7 +37,9 @@
             const speedMbps = (sizeMB / totalTime) * 8;
             console.log(`Total: ${sizeMB.toFixed(2)} MB in ${totalTime.toFixed(2)} seconds over ${iterations} runs`);
             console.log(`Average Speed: ${speedMbps.toFixed(2)} Mbps`);
-            return speedMbps;
+            document.write(`Total: ${sizeMB.toFixed(2)} MB in ${totalTime.toFixed(2)} seconds over ${iterations} runs`)
+            document.write(`Average Speed: ${speedMbps.toFixed(2)} Mbps`);
+            return speedMbps;   
         }
 
         // Use a 100 MB file, repeat 5 times (500 MB total)
